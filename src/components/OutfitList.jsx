@@ -38,9 +38,9 @@ const OutfitRow = ({
       </div>
       {isSelected &&
         <div className="List">
-          {!isEmptySelection(selectedItems) &&
+          {/*!isEmptySelection(selectedItems) &&
             <a className="List-item List-item--selection" href="#" onclick={bindSend('handleRemoveCombosWithSelected')}>Remove outfits with these items</a>
-          }
+          */}
           {CATEGORIES.map(cat =>
             <a
               className="List-item List-item--selection"

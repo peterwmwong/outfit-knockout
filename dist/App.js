@@ -1126,7 +1126,7 @@ var _xvdomCreateDynamic$3 = xvdom.createDynamic;
 var _xvdomEl$4 = xvdom.el;
 var _xvdomUpdateComponent$2 = xvdom.updateComponent;
 var _xvdomUpdateDynamic$3 = xvdom.updateDynamic;
-var _xvdomSpec7$1 = {
+var _xvdomSpec6$1 = {
   c: function c(inst) {
     var _n = (inst.e = _xvdomCreateComponent$2(List, List.state, {
       className: 'Card',
@@ -1155,7 +1155,7 @@ var _xvdomSpec7$1 = {
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec6$1 = {
+var _xvdomSpec5$1 = {
   c: function c(inst) {
     var _n = (inst.f = _xvdomCreateComponent$2(OutfitRow, OutfitRow.state, {
       db: inst.a,
@@ -1182,7 +1182,7 @@ var _xvdomSpec6$1 = {
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec5$1 = {
+var _xvdomSpec4$1 = {
   c: function c(inst) {
     var _n = _xvdomEl$4('div'),
         _n2;
@@ -1217,29 +1217,24 @@ var _xvdomSpec5$1 = {
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec4$1 = {
+var _xvdomSpec3$1 = {
   c: function c(inst) {
     var _n = _xvdomEl$4('div');
 
     _n.className = 'List';
-    inst.b = _xvdomCreateDynamic$3(false, _n, inst.a);
-    inst.d = _xvdomCreateDynamic$3(false, _n, inst.c);
+    inst.b = _xvdomCreateDynamic$3(true, _n, inst.a);
     return _n;
   },
   u: function u(inst, pInst) {
     var v;
 
     if (inst.a !== pInst.a) {
-      pInst.b = _xvdomUpdateDynamic$3(false, pInst.a, pInst.a = inst.a, pInst.b);
-    }
-
-    if (inst.c !== pInst.c) {
-      pInst.d = _xvdomUpdateDynamic$3(false, pInst.c, pInst.c = inst.c, pInst.d);
+      pInst.b = _xvdomUpdateDynamic$3(true, pInst.a, pInst.a = inst.a, pInst.b);
     }
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec3$1 = {
+var _xvdomSpec2$2 = {
   c: function c(inst) {
     var _n = _xvdomEl$4('a');
 
@@ -1263,30 +1258,6 @@ var _xvdomSpec3$1 = {
     if (v !== pInst.c) {
       pInst.b.innerText = v;
       pInst.c = v;
-    }
-  },
-  r: xvdom.DEADPOOL
-};
-var _xvdomSpec2$2 = {
-  c: function c(inst) {
-    var _n = _xvdomEl$4('a');
-
-    _n.className = 'List-item List-item--selection';
-    _n.href = '#';
-    inst.b = _n;
-    _n.onclick = inst.a;
-
-    _n.appendChild(document.createTextNode(('Remove outfits with these items') || ''));
-
-    return _n;
-  },
-  u: function u(inst, pInst) {
-    var v;
-    v = inst.a;
-
-    if (v !== pInst.a) {
-      pInst.b.onclick = v;
-      pInst.a = v;
     }
   },
   r: xvdom.DEADPOOL
@@ -1348,12 +1319,6 @@ var EMPTY_SELECTED_ITEM_IDS = ITEM_TYPES.reduce(function (obj, type) {
   return obj[type] = 0, obj;
 }, {});
 
-var isEmptySelection = function isEmptySelection(selectedItems) {
-  return ITEM_TYPES.reduce(function (sum, type) {
-    return sum + (selectedItems[type] && 1);
-  }, 0) < 2;
-};
-
 var OutfitRow = function OutfitRow(_ref) {
   var _ref$props = _ref.props,
       db = _ref$props.db,
@@ -1367,7 +1332,7 @@ var OutfitRow = function OutfitRow(_ref) {
   var outfit = db.outfits[outfitId];
   var isSelected = outfitId === selectedOutfitId;
   return {
-    $s: _xvdomSpec5$1,
+    $s: _xvdomSpec4$1,
     a: 'OutfitRow ' + (isSelected ? 'is-selected' : ''),
     c: ITEM_TYPES.map(function (type) {
       var itemId = outfit[type];
@@ -1381,14 +1346,10 @@ var OutfitRow = function OutfitRow(_ref) {
       };
     }),
     e: isSelected && {
-      $s: _xvdomSpec4$1,
-      a: !isEmptySelection(selectedItems) && {
-        $s: _xvdomSpec2$2,
-        a: bindSend('handleRemoveCombosWithSelected')
-      },
-      c: CATEGORIES.map(function (cat) {
+      $s: _xvdomSpec3$1,
+      a: CATEGORIES.map(function (cat) {
         return {
-          $s: _xvdomSpec3$1,
+          $s: _xvdomSpec2$2,
           a: function a() {
             return onSetCategory(cat);
           },
@@ -1441,7 +1402,7 @@ var renderOutfitListItem = function renderOutfitListItem(outfitId, _ref6) {
       onSetCategory = _ref6.onSetCategory;
   return {
     text: {
-      $s: _xvdomSpec6$1,
+      $s: _xvdomSpec5$1,
       a: db,
       b: outfitId,
       c: selectedOutfitId,
@@ -1480,7 +1441,7 @@ var OutfitList = function OutfitList(_ref8) {
       selectedOutfitId = _ref8.state.selectedOutfitId,
       bindSend = _ref8.bindSend;
   return {
-    $s: _xvdomSpec7$1,
+    $s: _xvdomSpec6$1,
     a: firstTen,
     b: renderOutfitListItem,
     c: {
