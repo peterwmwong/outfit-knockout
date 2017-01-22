@@ -7,120 +7,18 @@ import '../css/link.css';
 import '../css/reset.css';
 import '../css/text.css';
 
-import './common/Card.css';
-import './common/List.css';
 import './App.css';
 
 import xvdom      from 'xvdom';
 import Icon       from './common/Icon.jsx';
-import List       from './common/List.jsx';
 import Tabs       from './common/Tabs.jsx';
 import DB         from '../models/DB';
 import User       from '../models/User';
 import AppToolbar from './AppToolbar.jsx';
+import OutfitList from './OutfitList.jsx';
 
 import '../helpers/installServiceWorker';
 import '../helpers/globalLogger';
-
-const PAGE_SIZE           = 25;
-const CATEGORIES          = [ 'Yup', 'Nope', 'Maybe' ];
-const ITEM_TYPES          = [ 'bottom', 'shirt', 'sweater', 'businessAttire' ];
-const EMPTY_SELECTED_ITEM_IDS = ITEM_TYPES.reduce((obj, type) => ((obj[type] = 0), obj), {});
-
-const isEmptySelection = selectedItems =>
-  ITEM_TYPES.reduce((sum, type) => sum + (selectedItems[type] && 1), 0) < 2;
-
-const OutfitRow = ({
-  props: { db, outfitId, selectedOutfitId, onSelect },
-  state: { selectedItems },
-  bindSend
-}) => {
-  const outfit     = db.outfits[outfitId];
-  const isSelected = outfitId === selectedOutfitId;
-  return (
-    <div className={`OutfitRow ${isSelected ? 'is-selected' : ''}`}>
-      <div className='OutfitRow-items layout horizontal center'>
-        {ITEM_TYPES.map(type => {
-          const itemId = outfit[type];
-          return (
-            <span
-              className={`OutfitRow-item flex ${selectedItems[type] === itemId ? 'is-selected' : ''}`}
-              itemId={itemId}
-              itemType={type}
-              onclick={bindSend('handleSelectItem')}
-              style={`background-image: url(${db.items[itemId].closet_image_url})`}
-            />
-          );
-        })}
-      </div>
-      <span>
-        {isSelected &&
-          <div>
-            {!isEmptySelection(selectedItems) &&
-              <a href="#" onclick={bindSend('handleRemoveCombosWithSelected')}>Remove outfits with these items</a>
-            }
-            {CATEGORIES.map(cat =>
-              <a href="#" onclick={() => onAddToCategory(outfitId, cat)} innerText={cat}></a>
-            )}
-          </div>
-        }
-      </span>
-    </div>
-  );
-};
-
-OutfitRow.state = {
-  onInit: ({ props }) => ({
-    selectedItems: EMPTY_SELECTED_ITEM_IDS
-  }),
-
-  onProps: ({ props: { selectedOutfitId, outfit, outfitId }, state }) => ({
-    selectedItems: selectedOutfitId === outfitId ? state.selectedItems : EMPTY_SELECTED_ITEM_IDS
-  }),
-
-  handleSelectItem: ({ props, state: { selectedItems } }, { currentTarget }) => {
-    const { itemId, itemType } = currentTarget;
-    setTimeout(() => props.onSelect(props.outfitId));
-    return {
-      selectedItems: {
-        ...selectedItems,
-        [itemType]: selectedItems[itemType] === 0 ? +itemId : 0
-      }
-    };
-  }
-};
-
-const renderOutfitListItem = (outfitId, { db, selectedOutfitId, onSelect }) => ({
-  text: (
-    <OutfitRow
-      db={db}
-      outfitId={outfitId}
-      selectedOutfitId={selectedOutfitId}
-      onSelect={onSelect}
-    />
-  )
-})
-
-const firstTen = outfits => outfits.slice(0, PAGE_SIZE);
-
-const OutfitList = ({ props: { db, outfits }, state, bindSend }) => (
-  <List
-    className='Card'
-    transform={firstTen}
-    item={renderOutfitListItem}
-    itemClass='List-item--noPadding'
-    context={{ db, selectedOutfitId: state, onSelect: bindSend('handleSelectOutfit') }}
-    list={outfits}
-  />
-);
-
-const onInit = ({ props, state }) => state || 0;
-
-OutfitList.state = {
-  onInit,
-  onProps: onInit,
-  handleSelectOutfit: (_, outfitId) => outfitId
-}
 
 function toggleSignIn() {
   if (firebase.auth().currentUser) {
@@ -154,7 +52,7 @@ const TABS = {
   }
 };
 
-const App = ({ user, db }) => (
+const App = ({ props: { user, db }, state: { category } }) => (
   <body>
     <AppToolbar
       left={
@@ -165,22 +63,37 @@ const App = ({ user, db }) => (
         />
       }
       secondary={
-        <Tabs hrefPrefix='#ok/?' selected='uncategorized' tabs={TABS} />
+        <Tabs hrefPrefix='#' selected={category} tabs={TABS} />
       }
       title='OK'
     />
-    {user && db && <OutfitList db={db} outfits={user.uncategorized} />}
     <button onclick={toggleSignIn}>{user ? 'Sign out' : 'Sign in'}</button>
+    {user && db && <OutfitList category={category} db={db} user={user} />}
   </body>
 );
+
+const getCategoryFromHash = () => window.location.hash.slice(1) || 'uncategorized';
+
+const stateFromHash = ({ state }) => ({
+  category: getCategoryFromHash() || (state && state.category)
+});
+
+App.state = {
+  onInit: ({ bindSend }) => {
+    window.onhashchange = bindSend('handleHashChange');
+    return stateFromHash({});
+  },
+  onProps: stateFromHash,
+  handleHashChange: stateFromHash
+}
 
 const renderApp = (user, db) => <App user={user} db={db} />;
 
 firebase.initializeApp({
-  apiKey: "AIzaSyB0wl7pEwIcb9VzHluaAQAZhOe1huyPxi8",
-  authDomain: "outfit-knockout.firebaseapp.com",
-  databaseURL: "https://outfit-knockout.firebaseio.com",
-  storageBucket: "outfit-knockout.appspot.com",
+  apiKey: "AIzaSyBOWk2fU2p4Br1agfu25gY5NGYXy0ZDyS0",
+  authDomain: "outfit-knockout-ef20f.firebaseapp.com",
+  databaseURL: "https://outfit-knockout-ef20f.firebaseio.com",
+  storageBucket: "outfit-knockout-ef20f.appspot.com"
 });
 
 DB.get().then(db => {
@@ -197,10 +110,9 @@ DB.get().then(db => {
           id: authUser.uid,
           displayName: authUser.displayName,
           excludedCombos: {},
-          uncategorized: Object.keys(db.outfits),
-          yup: [],
-          nope: [],
-          maybe: []
+          yup: {},
+          nope: {},
+          maybe: {}
         })
       )
       .then(user => {

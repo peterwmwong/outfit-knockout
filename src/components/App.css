@@ -45,7 +45,7 @@
   background-size: 90%;
 }
 .OutfitRow.is-selected .OutfitRow-item + .OutfitRow-item {
-  margin-left: 10px;
+  margin-left: 6px;
 }
 
 .OutfitRow-item:before {

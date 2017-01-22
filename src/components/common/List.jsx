@@ -13,8 +13,8 @@ function renderItem(el){
 }
 
 export default props => {
-  const { className, list, transform = identity } = props;
-  const items = list ? transform(list) : [];
+  const { className, context, list, transform = identity } = props;
+  const items = transform ? transform(list, context) : (list || []);
   return (
     <div className={className} hidden={!items.length}>
       {items.map(renderItem, props)}

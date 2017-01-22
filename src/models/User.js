@@ -4,6 +4,8 @@ const LAST_LOGIN_ID_STORAGE_KEY = 'ok:lastLoggedInUserId';
 const fb = id => firebase.database().ref('users/' + id);
 const store = user => storage.setItemObj(`ok:${user.id}`, user);
 
+export const CATEGORIES = [ 'yup', 'nope', 'maybe' ];
+
 export default {
   current(){
     const lastLoginId = storage.getItem(LAST_LOGIN_ID_STORAGE_KEY);
@@ -18,6 +20,7 @@ export default {
     storage.setItem(LAST_LOGIN_ID_STORAGE_KEY, '');
   },
   localGet: id => storage.getItemObj(`ok:${id}`),
+  // TODO: Move App.jsx creating/initializing a new user into here create: => {}
   save: user =>
     new Promise((resolve, reject) => {
       fb(user.id).set(user, err => {

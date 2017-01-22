@@ -1,4 +1,3 @@
-document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>');
 (function () {
 'use strict';
 
@@ -217,26 +216,14 @@ function createStatelessComponent(component, props) {
 }
 
 function createComponent(component, actions, props, parentInstance) {
-  performance.mark('createComponent.start(' + component.name + ')');
-
   var result = (actions ? createStatefulComponent : createStatelessComponent)(component, props || EMPTY_PROPS, parentInstance, actions);
 
-  {
-    performance.mark('createComponent.end(' + component.name + ')');
-    performance.measure('<' + component.name + '/>', 'createComponent.start(' + component.name + ')', 'createComponent.end(' + component.name + ')');
-  }
   return result;
 }
 
 function updateComponent(component, actions, props, componentInstance) {
-  performance.mark('updateComponent.start(' + component.name + ')');
-
   var result = actions ? componentInstance.updateProps(props) : internalRerender(componentInstance, component(props));
 
-  {
-    performance.mark('updateComponent.end(' + component.name + ')');
-    performance.measure('<' + component.name + '/>', 'updateComponent.start(' + component.name + ')', 'updateComponent.end(' + component.name + ')');
-  }
   return result;
 }
 
@@ -374,30 +361,15 @@ var _xvdomSpec2$1 = {
   c: function c(inst) {
     var _n = _xvdomEl$2('div');
 
-    inst.b = _n;
-    _n.className = inst.a;
-    _n.hidden = inst.c;
-    inst.e = _xvdomCreateDynamic$1(true, _n, inst.d);
+    _n.className = 'Tabs layout horizontal end center-justified c-white l-height10 t-font-size-14 t-uppercase t-normal';
+    inst.b = _xvdomCreateDynamic$1(true, _n, inst.a);
     return _n;
   },
   u: function u(inst, pInst) {
     var v;
-    v = inst.a;
 
-    if (v !== pInst.a) {
-      pInst.b.className = v;
-      pInst.a = v;
-    }
-
-    v = inst.c;
-
-    if (v !== pInst.c) {
-      pInst.b.hidden = v;
-      pInst.c = v;
-    }
-
-    if (inst.d !== pInst.d) {
-      pInst.e = _xvdomUpdateDynamic$1(true, pInst.d, pInst.d = inst.d, pInst.e);
+    if (inst.a !== pInst.a) {
+      pInst.b = _xvdomUpdateDynamic$1(true, pInst.a, pInst.a = inst.a, pInst.b);
     }
   },
   r: xvdom.DEADPOOL
@@ -437,99 +409,6 @@ var _xvdomSpec$2 = {
   },
   r: xvdom.DEADPOOL
 };
-var identity = function identity(o) {
-  return o;
-};
-
-function renderItem(el) {
-  var item = this.item,
-      context = this.context,
-      itemClass = this.itemClass;
-
-  var _item = item(el, context),
-      href = _item.href,
-      key = _item.key,
-      text = _item.text;
-
-  return {
-    $s: _xvdomSpec$2,
-    a: 'List-item layout horizontal center t-normal ' + (itemClass || ''),
-    c: href,
-    d: text,
-    key: key
-  };
-}
-
-var List = (function (props) {
-  var className = props.className,
-      list = props.list,
-      _props$transform = props.transform,
-      transform = _props$transform === undefined ? identity : _props$transform;
-
-  var items = list ? transform(list) : [];
-  return {
-    $s: _xvdomSpec2$1,
-    a: className,
-    c: !items.length,
-    d: items.map(renderItem, props)
-  };
-});
-
-var _xvdomCreateDynamic$2 = xvdom.createDynamic;
-var _xvdomEl$3 = xvdom.el;
-var _xvdomUpdateDynamic$2 = xvdom.updateDynamic;
-var _xvdomSpec2$2 = {
-  c: function c(inst) {
-    var _n = _xvdomEl$3('div');
-
-    _n.className = 'Tabs layout horizontal end center-justified c-white l-height10 t-font-size-14 t-uppercase t-normal';
-    inst.b = _xvdomCreateDynamic$2(true, _n, inst.a);
-    return _n;
-  },
-  u: function u(inst, pInst) {
-    var v;
-
-    if (inst.a !== pInst.a) {
-      pInst.b = _xvdomUpdateDynamic$2(true, pInst.a, pInst.a = inst.a, pInst.b);
-    }
-  },
-  r: xvdom.DEADPOOL
-};
-var _xvdomSpec$3 = {
-  c: function c(inst) {
-    var _n = _xvdomEl$3('a');
-
-    inst.b = _n;
-    _n.className = inst.a;
-    if (inst.c != null) _n.href = inst.c;
-    inst.e = _xvdomCreateDynamic$2(true, _n, inst.d);
-    return _n;
-  },
-  u: function u(inst, pInst) {
-    var v;
-    v = inst.a;
-
-    if (v !== pInst.a) {
-      pInst.b.className = v;
-      pInst.a = v;
-    }
-
-    v = inst.c;
-
-    if (v !== pInst.c) {
-      if (pInst.b.href !== v) {
-        pInst.b.href = v;
-      }
-
-      pInst.c = v;
-    }
-
-    if (inst.d !== pInst.d) {
-      pInst.e = _xvdomUpdateDynamic$2(true, pInst.d, pInst.d = inst.d, pInst.e);
-    }
-  },
-  r: xvdom.DEADPOOL
-};
 function renderTab(tabId) {
   var tabs = this.tabs,
       selected = this.selected,
@@ -539,7 +418,7 @@ function renderTab(tabId) {
       title = _tabs$tabId.title;
 
   return {
-    $s: _xvdomSpec$3,
+    $s: _xvdomSpec$2,
     a: 'Tabs-tab u-cursor-pointer l-padding-h4 l-padding-b2 ' + (selected === tabId ? 'is-selected' : ''),
     c: '' + hrefPrefix + (href || tabId),
     d: title || tabId,
@@ -549,7 +428,7 @@ function renderTab(tabId) {
 
 var Tabs = (function (props) {
   return {
-    $s: _xvdomSpec2$2,
+    $s: _xvdomSpec2$1,
     a: Object.keys(props.tabs).map(renderTab, props)
   };
 });
@@ -597,9 +476,6 @@ if (!registry) localStorage.setItem(REGISTRY_KEY, JSON.stringify(registry = []))
 var removeLRUItem = function removeLRUItem() {
   var lruKey = registry.pop();
   if (lruKey) {
-    {
-      console.warn('[storage] ' + lruKey + ' bumped'); // eslint-disable-line no-console
-    }
     localStorage.removeItem(lruKey);
     updateRegistryKey(lruKey, false); // eslint-disable-line no-use-before-define
   }
@@ -615,9 +491,7 @@ var safeSetItem = function safeSetItem(key, value) {
       removeLRUItem();
     }
   }
-  {
-    console.warn('Unable to make room to store ' + key + '.'); // eslint-disable-line no-console
-  }
+  
 };
 
 var updateRegistryKey = function updateRegistryKey(key, isAdd) {
@@ -644,38 +518,20 @@ var storage = {
     return value;
   },
   getItemObj: function getItemObj(key) {
-    performance.mark('getItemObj.start(' + key + ')');
-
     var valueString = this.getItem(key);
 
-    performance.mark('getItemObj.JSON.start(' + key + ')');
-
     var value = valueString && JSON.parse(valueString);
-
-    {
-      performance.mark('getItemObj.JSON.end(' + key + ')');
-      performance.measure('getItemObj(' + key + ').JSON', 'getItemObj.JSON.start(' + key + ')', 'getItemObj.JSON.end(' + key + ')');
-
-      performance.mark('getItemObj.end(' + key + ')');
-      performance.measure('getItemObj(' + key + ')', 'getItemObj.start(' + key + ')', 'getItemObj.end(' + key + ')');
-    }
 
     return value;
   },
   setItemObj: function setItemObj(key, value) {
-    performance.mark('setItemObj.start(' + key + ')');
-
     this.setItem(key, JSON.stringify(value));
 
-    {
-      performance.mark('setItemObj.end(' + key + ')');
-      performance.measure('setItemObj(' + key + ')', 'setItemObj.start(' + key + ')', 'setItemObj.end(' + key + ')');
-    }
     return value;
   }
 };
 
-var identity$1 = function identity$1(o) {
+var identity = function identity(o) {
   return o;
 };
 var fromCache = function fromCache(cacheKey) {
@@ -685,8 +541,8 @@ var load = function load(_ref) {
   var url = _ref.url,
       cache = _ref.cache,
       _ref$transform = _ref.transform,
-      transform = _ref$transform === undefined ? identity$1 : _ref$transform;
-  return loadJSON(url).then(transform).then(!cache ? identity$1 : function (obj) {
+      transform = _ref$transform === undefined ? identity : _ref$transform;
+  return loadJSON(url).then(transform).then(!cache ? identity : function (obj) {
     return storage.setItemObj(cache, obj);
   });
 };
@@ -713,6 +569,12 @@ var model = (function (_ref2) {
 var DB = model({
   get: function get() {
     return {
+      transform: function transform(db) {
+        db.outfitIds = Object.keys(db.outfits).map(function (id) {
+          return +id;
+        });
+        return db;
+      },
       // TODO: Figure out IndexDB as it may allow for ~50MB amount data
       // cache: `okDB`,
       url: '../static/db.json'
@@ -937,6 +799,30 @@ var set = function set(object, property, value, receiver) {
   return value;
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var toConsumableArray = function (arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  } else {
+    return Array.from(arr);
+  }
+};
+
 var LAST_LOGIN_ID_STORAGE_KEY = 'ok:lastLoggedInUserId';
 var fb = function fb(id) {
   return firebase.database().ref('users/' + id);
@@ -944,6 +830,8 @@ var fb = function fb(id) {
 var store = function store(user) {
   return storage.setItemObj('ok:' + user.id, user);
 };
+
+var CATEGORIES = ['yup', 'nope', 'maybe'];
 
 var User = {
   current: function current() {
@@ -965,6 +853,7 @@ var User = {
   localGet: function localGet(id) {
     return storage.getItemObj('ok:' + id);
   },
+  // TODO: Move App.jsx creating/initializing a new user into here create: => {}
   save: function save(user) {
     return new Promise(function (resolve, reject) {
       fb(user.id).set(user, function (err) {
@@ -985,26 +874,26 @@ var User = {
 };
 
 var _xvdomCreateComponent$1 = xvdom.createComponent;
-var _xvdomCreateDynamic$3 = xvdom.createDynamic;
-var _xvdomEl$4 = xvdom.el;
+var _xvdomCreateDynamic$2 = xvdom.createDynamic;
+var _xvdomEl$3 = xvdom.el;
 var _xvdomUpdateComponent$1 = xvdom.updateComponent;
-var _xvdomUpdateDynamic$3 = xvdom.updateDynamic;
-var _xvdomSpec$4 = {
+var _xvdomUpdateDynamic$2 = xvdom.updateDynamic;
+var _xvdomSpec$3 = {
   c: function c(inst) {
-    var _n = _xvdomEl$4('div'),
+    var _n = _xvdomEl$3('div'),
         _n2,
         _n3,
         _n4;
 
     inst.b = _n;
     _n.className = inst.a;
-    _n2 = _xvdomEl$4('div');
+    _n2 = _xvdomEl$3('div');
     inst.d = _n2;
     _n2.className = inst.c;
-    _n3 = _xvdomEl$4('div');
+    _n3 = _xvdomEl$3('div');
     _n3.className = 'layout horizontal center-center l-height14';
-    inst.f = _xvdomCreateDynamic$3(false, _n3, inst.e);
-    _n4 = _xvdomEl$4('div');
+    inst.f = _xvdomCreateDynamic$2(false, _n3, inst.e);
+    _n4 = _xvdomEl$3('div');
     _n4.className = 'l-padding-r0 t-truncate t-font-size-20 flex';
     inst.h = _n4;
     _n4.textContent = inst.g;
@@ -1019,11 +908,11 @@ var _xvdomSpec$4 = {
 
     _n3.appendChild(_n4);
 
-    inst.l = _xvdomCreateDynamic$3(false, _n3, inst.k);
+    inst.l = _xvdomCreateDynamic$2(false, _n3, inst.k);
 
     _n2.appendChild(_n3);
 
-    inst.n = _xvdomCreateDynamic$3(false, _n2, inst.m);
+    inst.n = _xvdomCreateDynamic$2(false, _n2, inst.m);
 
     _n.appendChild(_n2);
 
@@ -1046,7 +935,7 @@ var _xvdomSpec$4 = {
     }
 
     if (inst.e !== pInst.e) {
-      pInst.f = _xvdomUpdateDynamic$3(false, pInst.e, pInst.e = inst.e, pInst.f);
+      pInst.f = _xvdomUpdateDynamic$2(false, pInst.e, pInst.e = inst.e, pInst.f);
     }
 
     v = inst.g;
@@ -1065,15 +954,16 @@ var _xvdomSpec$4 = {
     }
 
     if (inst.k !== pInst.k) {
-      pInst.l = _xvdomUpdateDynamic$3(false, pInst.k, pInst.k = inst.k, pInst.l);
+      pInst.l = _xvdomUpdateDynamic$2(false, pInst.k, pInst.k = inst.k, pInst.l);
     }
 
     if (inst.m !== pInst.m) {
-      pInst.n = _xvdomUpdateDynamic$3(false, pInst.m, pInst.m = inst.m, pInst.n);
+      pInst.n = _xvdomUpdateDynamic$2(false, pInst.m, pInst.m = inst.m, pInst.n);
     }
   },
   r: xvdom.DEADPOOL
 };
+// import App   from './App.jsx';
 var showSearch = function showSearch() {/*App.showSearch()*/};
 
 var AppToolbar = function AppToolbar(_ref) {
@@ -1084,7 +974,7 @@ var AppToolbar = function AppToolbar(_ref) {
       right = _ref$props.right,
       scrollClass = _ref.state.scrollClass;
   return {
-    $s: _xvdomSpec$4,
+    $s: _xvdomSpec$3,
     a: 'AppToolbar ' + (secondary ? 'AppToolbar--withSecondary' : ''),
     c: 'AppToolbar-bar fixed fixed--top c-white bg-purple ' + scrollClass,
     e: left,
@@ -1118,205 +1008,127 @@ AppToolbar.state = {
   }
 };
 
-var sw = navigator.serviceWorker;
-if (sw) {
-  sw.register('../serviceWorker.js');
-}
-
-{
-  window.log = function (obj) {
-    return console.log(obj), //eslint-disable-line
-    obj;
-  };
-  window.debug = function (obj) {
-    var cond = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
-    if (cond) debugger; //eslint-disable-line
-    return obj;
-  };
-}
-
-var _xvdomCreateComponent = xvdom.createComponent;
-var _xvdomCreateDynamic = xvdom.createDynamic;
-var _xvdomEl = xvdom.el;
-var _xvdomUpdateComponent = xvdom.updateComponent;
-var _xvdomUpdateDynamic = xvdom.updateDynamic;
-var _xvdomSpec16 = {
+var _xvdomCreateDynamic$4 = xvdom.createDynamic;
+var _xvdomEl$5 = xvdom.el;
+var _xvdomUpdateDynamic$4 = xvdom.updateDynamic;
+var _xvdomSpec2$3 = {
   c: function c(inst) {
-    var _n = (inst.c = _xvdomCreateComponent(App, App.state, {
-      user: inst.a,
-      db: inst.b
-    }, inst)).$n;
+    var _n = _xvdomEl$5('div');
 
+    inst.b = _n;
+    _n.className = inst.a;
+    _n.hidden = inst.c;
+    inst.e = _xvdomCreateDynamic$4(true, _n, inst.d);
     return _n;
   },
   u: function u(inst, pInst) {
     var v;
+    v = inst.a;
 
-    if (inst.a !== pInst.a || inst.b !== pInst.b) {
-      pInst.c = _xvdomUpdateComponent(App, App.state, {
-        user: pInst.a = inst.a,
-        db: pInst.b = inst.b
-      }, pInst.c);
+    if (v !== pInst.a) {
+      pInst.b.className = v;
+      pInst.a = v;
     }
-  },
-  r: xvdom.DEADPOOL
-};
-var _xvdomSpec15 = {
-  c: function c(inst) {
-    var _n = (inst.b = _xvdomCreateComponent(Tabs, Tabs.state, {
-      hrefPrefix: '#ok/?',
-      selected: 'uncategorized',
-      tabs: inst.a
-    }, inst)).$n;
 
-    return _n;
-  },
-  u: function u(inst, pInst) {
-    var v;
+    v = inst.c;
 
-    if (inst.a !== pInst.a) {
-      pInst.b = _xvdomUpdateComponent(Tabs, Tabs.state, {
-        hrefPrefix: '#ok/?',
-        selected: 'uncategorized',
-        tabs: pInst.a = inst.a
-      }, pInst.b);
-    }
-  },
-  r: xvdom.DEADPOOL
-};
-var _xvdomSpec14 = {
-  c: function c(inst) {
-    var _n = _xvdomCreateComponent(Icon, Icon.state, {
-      className: 'c-white l-padding-h4',
-      name: 'three-bars',
-      size: 'small'
-    }, inst).$n;
-
-    return _n;
-  },
-  u: function u() {},
-  r: xvdom.DEADPOOL
-};
-var _xvdomSpec13 = {
-  c: function c(inst) {
-    var _n = _xvdomEl('body'),
-        _n2;
-
-    _n2 = (inst.c = _xvdomCreateComponent(AppToolbar, AppToolbar.state, {
-      left: inst.a,
-      secondary: inst.b,
-      title: 'OK'
-    }, inst)).$n;
-
-    _n.appendChild(_n2);
-
-    inst.e = _xvdomCreateDynamic(false, _n, inst.d);
-    _n2 = _xvdomEl('button');
-    inst.g = _n2;
-    _n2.onclick = inst.f;
-    inst.i = _xvdomCreateDynamic(true, _n2, inst.h);
-
-    _n.appendChild(_n2);
-
-    return _n;
-  },
-  u: function u(inst, pInst) {
-    var v;
-
-    if (inst.a !== pInst.a || inst.b !== pInst.b) {
-      pInst.c = _xvdomUpdateComponent(AppToolbar, AppToolbar.state, {
-        left: pInst.a = inst.a,
-        secondary: pInst.b = inst.b,
-        title: 'OK'
-      }, pInst.c);
+    if (v !== pInst.c) {
+      pInst.b.hidden = v;
+      pInst.c = v;
     }
 
     if (inst.d !== pInst.d) {
-      pInst.e = _xvdomUpdateDynamic(false, pInst.d, pInst.d = inst.d, pInst.e);
-    }
-
-    v = inst.f;
-
-    if (v !== pInst.f) {
-      pInst.g.onclick = v;
-      pInst.f = v;
-    }
-
-    if (inst.h !== pInst.h) {
-      pInst.i = _xvdomUpdateDynamic(true, pInst.h, pInst.h = inst.h, pInst.i);
+      pInst.e = _xvdomUpdateDynamic$4(true, pInst.d, pInst.d = inst.d, pInst.e);
     }
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec12 = {
+var _xvdomSpec$5 = {
   c: function c(inst) {
-    var _n = (inst.c = _xvdomCreateComponent(OutfitList, OutfitList.state, {
-      db: inst.a,
-      outfits: inst.b
-    }, inst)).$n;
+    var _n = _xvdomEl$5('a');
 
+    inst.b = _n;
+    _n.className = inst.a;
+    if (inst.c != null) _n.href = inst.c;
+    inst.e = _xvdomCreateDynamic$4(true, _n, inst.d);
     return _n;
   },
   u: function u(inst, pInst) {
     var v;
+    v = inst.a;
 
-    if (inst.a !== pInst.a || inst.b !== pInst.b) {
-      pInst.c = _xvdomUpdateComponent(OutfitList, OutfitList.state, {
-        db: pInst.a = inst.a,
-        outfits: pInst.b = inst.b
-      }, pInst.c);
+    if (v !== pInst.a) {
+      pInst.b.className = v;
+      pInst.a = v;
+    }
+
+    v = inst.c;
+
+    if (v !== pInst.c) {
+      if (pInst.b.href !== v) {
+        pInst.b.href = v;
+      }
+
+      pInst.c = v;
+    }
+
+    if (inst.d !== pInst.d) {
+      pInst.e = _xvdomUpdateDynamic$4(true, pInst.d, pInst.d = inst.d, pInst.e);
     }
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec11 = {
-  c: function c() {
-    var _n = _xvdomEl('div');
-
-    _n.appendChild(document.createTextNode(('Hello') || ''));
-
-    return _n;
-  },
-  u: function u() {},
-  r: xvdom.DEADPOOL
+var identity$1 = function identity$1(o) {
+  return o;
 };
-var _xvdomSpec10 = {
-  c: function c() {
-    var _n = _xvdomEl('div');
 
-    _n.appendChild(document.createTextNode(('Hello') || ''));
+function renderItem(el) {
+  var item = this.item,
+      context = this.context,
+      itemClass = this.itemClass;
 
-    return _n;
-  },
-  u: function u() {},
-  r: xvdom.DEADPOOL
-};
-var _xvdomSpec9 = {
-  c: function c() {
-    var _n = _xvdomEl('div');
+  var _item = item(el, context),
+      href = _item.href,
+      key = _item.key,
+      text = _item.text;
 
-    _n.appendChild(document.createTextNode(('Hello') || ''));
+  return {
+    $s: _xvdomSpec$5,
+    a: 'List-item layout horizontal center t-normal ' + (itemClass || ''),
+    c: href,
+    d: text,
+    key: key
+  };
+}
 
-    return _n;
-  },
-  u: function u() {},
-  r: xvdom.DEADPOOL
-};
-var _xvdomSpec8 = {
-  c: function c() {
-    var _n = _xvdomEl('div');
+var List = (function (props) {
+  var className = props.className,
+      context = props.context,
+      list = props.list,
+      _props$transform = props.transform,
+      transform = _props$transform === undefined ? identity$1 : _props$transform;
 
-    _n.appendChild(document.createTextNode(('Hello') || ''));
+  var items = transform ? transform(list, context) : list || [];
+  return {
+    $s: _xvdomSpec2$3,
+    a: className,
+    c: !items.length,
+    d: items.map(renderItem, props)
+  };
+});
 
-    return _n;
-  },
-  u: function u() {},
-  r: xvdom.DEADPOOL
-};
-var _xvdomSpec7 = {
+var titlecase = (function (s) {
+  return String.fromCharCode(s.charCodeAt(0) - 32) + s.slice(1);
+});
+
+var _xvdomCreateComponent$2 = xvdom.createComponent;
+var _xvdomCreateDynamic$3 = xvdom.createDynamic;
+var _xvdomEl$4 = xvdom.el;
+var _xvdomUpdateComponent$2 = xvdom.updateComponent;
+var _xvdomUpdateDynamic$3 = xvdom.updateDynamic;
+var _xvdomSpec7$1 = {
   c: function c(inst) {
-    var _n = (inst.e = _xvdomCreateComponent(List, List.state, {
+    var _n = (inst.e = _xvdomCreateComponent$2(List, List.state, {
       className: 'Card',
       transform: inst.a,
       item: inst.b,
@@ -1331,7 +1143,7 @@ var _xvdomSpec7 = {
     var v;
 
     if (inst.c !== pInst.c || inst.b !== pInst.b || inst.a !== pInst.a || inst.d !== pInst.d) {
-      pInst.e = _xvdomUpdateComponent(List, List.state, {
+      pInst.e = _xvdomUpdateComponent$2(List, List.state, {
         className: 'Card',
         transform: pInst.a = inst.a,
         item: pInst.b = inst.b,
@@ -1343,13 +1155,14 @@ var _xvdomSpec7 = {
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec6 = {
+var _xvdomSpec6$1 = {
   c: function c(inst) {
-    var _n = (inst.e = _xvdomCreateComponent(OutfitRow, OutfitRow.state, {
+    var _n = (inst.f = _xvdomCreateComponent$2(OutfitRow, OutfitRow.state, {
       db: inst.a,
       outfitId: inst.b,
       selectedOutfitId: inst.c,
-      onSelect: inst.d
+      onSelect: inst.d,
+      onSetCategory: inst.e
     }, inst)).$n;
 
     return _n;
@@ -1357,35 +1170,32 @@ var _xvdomSpec6 = {
   u: function u(inst, pInst) {
     var v;
 
-    if (inst.c !== pInst.c || inst.b !== pInst.b || inst.a !== pInst.a || inst.d !== pInst.d) {
-      pInst.e = _xvdomUpdateComponent(OutfitRow, OutfitRow.state, {
+    if (inst.d !== pInst.d || inst.c !== pInst.c || inst.b !== pInst.b || inst.a !== pInst.a || inst.e !== pInst.e) {
+      pInst.f = _xvdomUpdateComponent$2(OutfitRow, OutfitRow.state, {
         db: pInst.a = inst.a,
         outfitId: pInst.b = inst.b,
         selectedOutfitId: pInst.c = inst.c,
-        onSelect: pInst.d = inst.d
-      }, pInst.e);
+        onSelect: pInst.d = inst.d,
+        onSetCategory: pInst.e = inst.e
+      }, pInst.f);
     }
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec5 = {
+var _xvdomSpec5$1 = {
   c: function c(inst) {
-    var _n = _xvdomEl('div'),
+    var _n = _xvdomEl$4('div'),
         _n2;
 
     inst.b = _n;
     _n.className = inst.a;
-    _n2 = _xvdomEl('div');
+    _n2 = _xvdomEl$4('div');
     _n2.className = 'OutfitRow-items layout horizontal center';
-    inst.d = _xvdomCreateDynamic(true, _n2, inst.c);
+    inst.d = _xvdomCreateDynamic$3(true, _n2, inst.c);
 
     _n.appendChild(_n2);
 
-    _n2 = _xvdomEl('span');
-    inst.f = _xvdomCreateDynamic(true, _n2, inst.e);
-
-    _n.appendChild(_n2);
-
+    inst.f = _xvdomCreateDynamic$3(false, _n, inst.e);
     return _n;
   },
   u: function u(inst, pInst) {
@@ -1398,41 +1208,42 @@ var _xvdomSpec5 = {
     }
 
     if (inst.c !== pInst.c) {
-      pInst.d = _xvdomUpdateDynamic(true, pInst.c, pInst.c = inst.c, pInst.d);
+      pInst.d = _xvdomUpdateDynamic$3(true, pInst.c, pInst.c = inst.c, pInst.d);
     }
 
     if (inst.e !== pInst.e) {
-      pInst.f = _xvdomUpdateDynamic(true, pInst.e, pInst.e = inst.e, pInst.f);
+      pInst.f = _xvdomUpdateDynamic$3(false, pInst.e, pInst.e = inst.e, pInst.f);
     }
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec4 = {
+var _xvdomSpec4$1 = {
   c: function c(inst) {
-    var _n = _xvdomEl('div');
+    var _n = _xvdomEl$4('div');
 
-    inst.b = _xvdomCreateDynamic(false, _n, inst.a);
-    inst.d = _xvdomCreateDynamic(false, _n, inst.c);
+    _n.className = 'List';
+    inst.b = _xvdomCreateDynamic$3(false, _n, inst.a);
+    inst.d = _xvdomCreateDynamic$3(false, _n, inst.c);
     return _n;
   },
   u: function u(inst, pInst) {
     var v;
 
     if (inst.a !== pInst.a) {
-      pInst.b = _xvdomUpdateDynamic(false, pInst.a, pInst.a = inst.a, pInst.b);
+      pInst.b = _xvdomUpdateDynamic$3(false, pInst.a, pInst.a = inst.a, pInst.b);
     }
 
     if (inst.c !== pInst.c) {
-      pInst.d = _xvdomUpdateDynamic(false, pInst.c, pInst.c = inst.c, pInst.d);
+      pInst.d = _xvdomUpdateDynamic$3(false, pInst.c, pInst.c = inst.c, pInst.d);
     }
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec3 = {
+var _xvdomSpec3$1 = {
   c: function c(inst) {
-    var _n = _xvdomEl('a');
+    var _n = _xvdomEl$4('a');
 
-    _n.href = '#';
+    _n.className = 'List-item List-item--selection';
     inst.b = _n;
     _n.onclick = inst.a;
     _n.innerText = inst.c;
@@ -1456,10 +1267,11 @@ var _xvdomSpec3 = {
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec2 = {
+var _xvdomSpec2$2 = {
   c: function c(inst) {
-    var _n = _xvdomEl('a');
+    var _n = _xvdomEl$4('a');
 
+    _n.className = 'List-item List-item--selection';
     _n.href = '#';
     inst.b = _n;
     _n.onclick = inst.a;
@@ -1479,9 +1291,9 @@ var _xvdomSpec2 = {
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec = {
+var _xvdomSpec$4 = {
   c: function c(inst) {
-    var _n = _xvdomEl('span');
+    var _n = _xvdomEl$4('span');
 
     inst.b = _n;
     _n.className = inst.a;
@@ -1531,7 +1343,6 @@ var _xvdomSpec = {
   r: xvdom.DEADPOOL
 };
 var PAGE_SIZE = 25;
-var CATEGORIES = ['Yup', 'Nope', 'Maybe'];
 var ITEM_TYPES = ['bottom', 'shirt', 'sweater', 'businessAttire'];
 var EMPTY_SELECTED_ITEM_IDS = ITEM_TYPES.reduce(function (obj, type) {
   return obj[type] = 0, obj;
@@ -1549,18 +1360,19 @@ var OutfitRow = function OutfitRow(_ref) {
       outfitId = _ref$props.outfitId,
       selectedOutfitId = _ref$props.selectedOutfitId,
       onSelect = _ref$props.onSelect,
+      onSetCategory = _ref$props.onSetCategory,
       selectedItems = _ref.state.selectedItems,
       bindSend = _ref.bindSend;
 
   var outfit = db.outfits[outfitId];
   var isSelected = outfitId === selectedOutfitId;
   return {
-    $s: _xvdomSpec5,
+    $s: _xvdomSpec5$1,
     a: 'OutfitRow ' + (isSelected ? 'is-selected' : ''),
     c: ITEM_TYPES.map(function (type) {
       var itemId = outfit[type];
       return {
-        $s: _xvdomSpec,
+        $s: _xvdomSpec$4,
         a: 'OutfitRow-item flex ' + (selectedItems[type] === itemId ? 'is-selected' : ''),
         c: itemId,
         d: type,
@@ -1569,18 +1381,18 @@ var OutfitRow = function OutfitRow(_ref) {
       };
     }),
     e: isSelected && {
-      $s: _xvdomSpec4,
+      $s: _xvdomSpec4$1,
       a: !isEmptySelection(selectedItems) && {
-        $s: _xvdomSpec2,
+        $s: _xvdomSpec2$2,
         a: bindSend('handleRemoveCombosWithSelected')
       },
       c: CATEGORIES.map(function (cat) {
         return {
-          $s: _xvdomSpec3,
+          $s: _xvdomSpec3$1,
           a: function a() {
-            return onAddToCategory(outfitId, cat);
+            return onSetCategory(cat);
           },
-          c: cat
+          c: titlecase(cat)
         };
       })
     }
@@ -1625,51 +1437,279 @@ OutfitRow.state = {
 var renderOutfitListItem = function renderOutfitListItem(outfitId, _ref6) {
   var db = _ref6.db,
       selectedOutfitId = _ref6.selectedOutfitId,
-      onSelect = _ref6.onSelect;
+      onSelect = _ref6.onSelect,
+      onSetCategory = _ref6.onSetCategory;
   return {
     text: {
-      $s: _xvdomSpec6,
+      $s: _xvdomSpec6$1,
       a: db,
       b: outfitId,
       c: selectedOutfitId,
-      d: onSelect
+      d: onSelect,
+      e: onSetCategory
     }
   };
 };
 
-var firstTen = function firstTen(outfits) {
-  return outfits.slice(0, PAGE_SIZE);
+function isUncategorized(outfitId) {
+  // this === user
+  var cat;
+  for (var i = 0; i < CATEGORIES.length; ++i) {
+    cat = CATEGORIES[i];
+    if (this[cat] && this[cat][outfitId]) return false;
+  }
+  return true;
+}
+
+var firstTen = function firstTen(outfits, _ref7) {
+  var db = _ref7.db,
+      category = _ref7.category,
+      user = _ref7.user;
+
+  if (category === 'uncategorized') {
+    return db.outfitIds.filter(isUncategorized, user).slice(0, PAGE_SIZE);
+  }
+  return outfits ? Object.keys(outfits) : [];
 };
 
-var OutfitList = function OutfitList(_ref7) {
-  var _ref7$props = _ref7.props,
-      db = _ref7$props.db,
-      outfits = _ref7$props.outfits,
-      state = _ref7.state,
-      bindSend = _ref7.bindSend;
+var OutfitList = function OutfitList(_ref8) {
+  var _ref8$props = _ref8.props,
+      user = _ref8$props.user,
+      category = _ref8$props.category,
+      db = _ref8$props.db,
+      selectedOutfitId = _ref8.state.selectedOutfitId,
+      bindSend = _ref8.bindSend;
   return {
-    $s: _xvdomSpec7,
+    $s: _xvdomSpec7$1,
     a: firstTen,
     b: renderOutfitListItem,
-    c: { db: db, selectedOutfitId: state, onSelect: bindSend('handleSelectOutfit') },
-    d: outfits
+    c: {
+      category: category,
+      db: db,
+      user: user,
+      selectedOutfitId: selectedOutfitId,
+      onSelect: bindSend('handleSelectOutfit'),
+      onSetCategory: bindSend('handleSetCategory')
+    },
+    d: user[category]
   };
 };
 
-var onInit$1 = function onInit$1(_ref8) {
-  var props = _ref8.props,
-      state = _ref8.state;
-  return state || 0;
+var onInit$1 = function onInit$1(_ref9) {
+  var props = _ref9.props,
+      state = _ref9.state;
+  return { selectedOutfitId: state && state.selectedOutfitId || 0 };
 };
 
 OutfitList.state = {
   onInit: onInit$1,
   onProps: onInit$1,
-  handleSelectOutfit: function handleSelectOutfit(_$$1, outfitId) {
-    return outfitId;
+  handleSelectOutfit: function handleSelectOutfit(_$$1, selectedOutfitId) {
+    return { selectedOutfitId: selectedOutfitId };
+  },
+  handleSetCategory: function handleSetCategory(_ref10, cat) {
+    var user = _ref10.props.user,
+        selectedOutfitId = _ref10.state.selectedOutfitId;
+
+    user[cat] = user[cat] || {};
+    if (!user[cat][selectedOutfitId]) {
+      [].concat(toConsumableArray(CATEGORIES), ['uncategorized']).forEach(function (otherCat) {
+        if (otherCat === cat) user[otherCat][selectedOutfitId] = 1;else if (user[otherCat]) {
+          var catOutfits = user[otherCat];
+          delete catOutfits[selectedOutfitId];
+        }
+      });
+      User.save(user);
+    }
+    return 0;
   }
 };
 
+var sw = navigator.serviceWorker;
+if (sw) {
+  sw.register('../serviceWorker.js');
+}
+
+var _xvdomCreateComponent = xvdom.createComponent;
+var _xvdomCreateDynamic = xvdom.createDynamic;
+var _xvdomEl = xvdom.el;
+var _xvdomUpdateComponent = xvdom.updateComponent;
+var _xvdomUpdateDynamic = xvdom.updateDynamic;
+var _xvdomSpec9 = {
+  c: function c(inst) {
+    var _n = (inst.c = _xvdomCreateComponent(App, App.state, {
+      user: inst.a,
+      db: inst.b
+    }, inst)).$n;
+
+    return _n;
+  },
+  u: function u(inst, pInst) {
+    var v;
+
+    if (inst.a !== pInst.a || inst.b !== pInst.b) {
+      pInst.c = _xvdomUpdateComponent(App, App.state, {
+        user: pInst.a = inst.a,
+        db: pInst.b = inst.b
+      }, pInst.c);
+    }
+  },
+  r: xvdom.DEADPOOL
+};
+var _xvdomSpec8 = {
+  c: function c(inst) {
+    var _n = (inst.c = _xvdomCreateComponent(Tabs, Tabs.state, {
+      hrefPrefix: '#',
+      selected: inst.a,
+      tabs: inst.b
+    }, inst)).$n;
+
+    return _n;
+  },
+  u: function u(inst, pInst) {
+    var v;
+
+    if (inst.a !== pInst.a || inst.b !== pInst.b) {
+      pInst.c = _xvdomUpdateComponent(Tabs, Tabs.state, {
+        hrefPrefix: '#',
+        selected: pInst.a = inst.a,
+        tabs: pInst.b = inst.b
+      }, pInst.c);
+    }
+  },
+  r: xvdom.DEADPOOL
+};
+var _xvdomSpec7 = {
+  c: function c(inst) {
+    var _n = _xvdomCreateComponent(Icon, Icon.state, {
+      className: 'c-white l-padding-h4',
+      name: 'three-bars',
+      size: 'small'
+    }, inst).$n;
+
+    return _n;
+  },
+  u: function u() {},
+  r: xvdom.DEADPOOL
+};
+var _xvdomSpec6 = {
+  c: function c(inst) {
+    var _n = _xvdomEl('body'),
+        _n2;
+
+    _n2 = (inst.c = _xvdomCreateComponent(AppToolbar, AppToolbar.state, {
+      left: inst.a,
+      secondary: inst.b,
+      title: 'OK'
+    }, inst)).$n;
+
+    _n.appendChild(_n2);
+
+    _n2 = _xvdomEl('button');
+    inst.e = _n2;
+    _n2.onclick = inst.d;
+    inst.g = _xvdomCreateDynamic(true, _n2, inst.f);
+
+    _n.appendChild(_n2);
+
+    inst.i = _xvdomCreateDynamic(false, _n, inst.h);
+    return _n;
+  },
+  u: function u(inst, pInst) {
+    var v;
+
+    if (inst.a !== pInst.a || inst.b !== pInst.b) {
+      pInst.c = _xvdomUpdateComponent(AppToolbar, AppToolbar.state, {
+        left: pInst.a = inst.a,
+        secondary: pInst.b = inst.b,
+        title: 'OK'
+      }, pInst.c);
+    }
+
+    v = inst.d;
+
+    if (v !== pInst.d) {
+      pInst.e.onclick = v;
+      pInst.d = v;
+    }
+
+    if (inst.f !== pInst.f) {
+      pInst.g = _xvdomUpdateDynamic(true, pInst.f, pInst.f = inst.f, pInst.g);
+    }
+
+    if (inst.h !== pInst.h) {
+      pInst.i = _xvdomUpdateDynamic(false, pInst.h, pInst.h = inst.h, pInst.i);
+    }
+  },
+  r: xvdom.DEADPOOL
+};
+var _xvdomSpec5 = {
+  c: function c(inst) {
+    var _n = (inst.d = _xvdomCreateComponent(OutfitList, OutfitList.state, {
+      category: inst.a,
+      db: inst.b,
+      user: inst.c
+    }, inst)).$n;
+
+    return _n;
+  },
+  u: function u(inst, pInst) {
+    var v;
+
+    if (inst.b !== pInst.b || inst.a !== pInst.a || inst.c !== pInst.c) {
+      pInst.d = _xvdomUpdateComponent(OutfitList, OutfitList.state, {
+        category: pInst.a = inst.a,
+        db: pInst.b = inst.b,
+        user: pInst.c = inst.c
+      }, pInst.d);
+    }
+  },
+  r: xvdom.DEADPOOL
+};
+var _xvdomSpec4 = {
+  c: function c() {
+    var _n = _xvdomEl('div');
+
+    _n.appendChild(document.createTextNode(('Hello') || ''));
+
+    return _n;
+  },
+  u: function u() {},
+  r: xvdom.DEADPOOL
+};
+var _xvdomSpec3 = {
+  c: function c() {
+    var _n = _xvdomEl('div');
+
+    _n.appendChild(document.createTextNode(('Hello') || ''));
+
+    return _n;
+  },
+  u: function u() {},
+  r: xvdom.DEADPOOL
+};
+var _xvdomSpec2 = {
+  c: function c() {
+    var _n = _xvdomEl('div');
+
+    _n.appendChild(document.createTextNode(('Hello') || ''));
+
+    return _n;
+  },
+  u: function u() {},
+  r: xvdom.DEADPOOL
+};
+var _xvdomSpec = {
+  c: function c() {
+    var _n = _xvdomEl('div');
+
+    _n.appendChild(document.createTextNode(('Hello') || ''));
+
+    return _n;
+  },
+  u: function u() {},
+  r: xvdom.DEADPOOL
+};
 function toggleSignIn() {
   if (firebase.auth().currentUser) {
     User.unsetCurrent();
@@ -1688,7 +1728,7 @@ var TABS = {
     title: 'Uncategorized',
     view: function view(id) {
       return {
-        $s: _xvdomSpec8
+        $s: _xvdomSpec
       };
     }
   },
@@ -1696,7 +1736,7 @@ var TABS = {
     title: 'Yup',
     view: function view(id) {
       return {
-        $s: _xvdomSpec9
+        $s: _xvdomSpec2
       };
     }
   },
@@ -1704,7 +1744,7 @@ var TABS = {
     title: 'Nope',
     view: function view(id) {
       return {
-        $s: _xvdomSpec10
+        $s: _xvdomSpec3
       };
     }
   },
@@ -1712,47 +1752,73 @@ var TABS = {
     title: 'Maybe',
     view: function view(id) {
       return {
-        $s: _xvdomSpec11
+        $s: _xvdomSpec4
       };
     }
   }
 };
 
-var App = function App(_ref9) {
-  var user = _ref9.user,
-      db = _ref9.db;
+var App = function App(_ref) {
+  var _ref$props = _ref.props,
+      user = _ref$props.user,
+      db = _ref$props.db,
+      category = _ref.state.category;
   return {
-    $s: _xvdomSpec13,
+    $s: _xvdomSpec6,
     a: {
-      $s: _xvdomSpec14
+      $s: _xvdomSpec7
     },
     b: {
-      $s: _xvdomSpec15,
-      a: TABS
+      $s: _xvdomSpec8,
+      a: category,
+      b: TABS
     },
-    d: user && db && {
-      $s: _xvdomSpec12,
-      a: db,
-      b: user.uncategorized
-    },
-    f: toggleSignIn,
-    h: user ? 'Sign out' : 'Sign in'
+    d: toggleSignIn,
+    f: user ? 'Sign out' : 'Sign in',
+    h: user && db && {
+      $s: _xvdomSpec5,
+      a: category,
+      b: db,
+      c: user
+    }
   };
+};
+
+var getCategoryFromHash = function getCategoryFromHash() {
+  return window.location.hash.slice(1) || 'uncategorized';
+};
+
+var stateFromHash = function stateFromHash(_ref2) {
+  var state = _ref2.state;
+  return {
+    category: getCategoryFromHash() || state && state.category
+  };
+};
+
+App.state = {
+  onInit: function onInit(_ref3) {
+    var bindSend = _ref3.bindSend;
+
+    window.onhashchange = bindSend('handleHashChange');
+    return stateFromHash({});
+  },
+  onProps: stateFromHash,
+  handleHashChange: stateFromHash
 };
 
 var renderApp = function renderApp(user, db) {
   return {
-    $s: _xvdomSpec16,
+    $s: _xvdomSpec9,
     a: user,
     b: db
   };
 };
 
 firebase.initializeApp({
-  apiKey: "AIzaSyB0wl7pEwIcb9VzHluaAQAZhOe1huyPxi8",
-  authDomain: "outfit-knockout.firebaseapp.com",
-  databaseURL: "https://outfit-knockout.firebaseio.com",
-  storageBucket: "outfit-knockout.appspot.com"
+  apiKey: "AIzaSyBOWk2fU2p4Br1agfu25gY5NGYXy0ZDyS0",
+  authDomain: "outfit-knockout-ef20f.firebaseapp.com",
+  databaseURL: "https://outfit-knockout-ef20f.firebaseio.com",
+  storageBucket: "outfit-knockout-ef20f.appspot.com"
 });
 
 DB.get().then(function (db) {
@@ -1768,10 +1834,9 @@ DB.get().then(function (db) {
         id: authUser.uid,
         displayName: authUser.displayName,
         excludedCombos: {},
-        uncategorized: Object.keys(db.outfits),
-        yup: [],
-        nope: [],
-        maybe: []
+        yup: {},
+        nope: {},
+        maybe: {}
       });
     }).then(function (user) {
       User.setCurrent(user.id);

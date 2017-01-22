@@ -22,7 +22,12 @@
   padding: 16px;
 }
 
-
 .List-item.List-item--noPadding {
   padding: 0;
+}
+
+.List-item.List-item--selection {
+  background-color: #f3faff;
+  border-top: 1px solid #e0f1ff;
+  border-bottom: none;
 }
