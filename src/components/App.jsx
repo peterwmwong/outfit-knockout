@@ -36,19 +36,15 @@ function toggleSignIn() {
 const TABS = {
   uncategorized:{
     title: 'Uncategorized',
-    view: id => <div>Hello</div>
   },
   yup:{
     title: 'Yup',
-    view: id => <div>Hello</div>
   },
   nope:{
     title: 'Nope',
-    view: id => <div>Hello</div>
   },
   maybe:{
     title: 'Maybe',
-    view: id => <div>Hello</div>
   }
 };
 

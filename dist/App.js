@@ -1126,7 +1126,7 @@ var _xvdomCreateDynamic$3 = xvdom.createDynamic;
 var _xvdomEl$4 = xvdom.el;
 var _xvdomUpdateComponent$2 = xvdom.updateComponent;
 var _xvdomUpdateDynamic$3 = xvdom.updateDynamic;
-var _xvdomSpec6$1 = {
+var _xvdomSpec7 = {
   c: function c(inst) {
     var _n = (inst.e = _xvdomCreateComponent$2(List, List.state, {
       className: 'Card',
@@ -1155,14 +1155,15 @@ var _xvdomSpec6$1 = {
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec5$1 = {
+var _xvdomSpec6 = {
   c: function c(inst) {
-    var _n = (inst.f = _xvdomCreateComponent$2(OutfitRow, OutfitRow.state, {
+    var _n = (inst.g = _xvdomCreateComponent$2(OutfitRow, OutfitRow.state, {
       db: inst.a,
       outfitId: inst.b,
       selectedOutfitId: inst.c,
       onSelect: inst.d,
-      onSetCategory: inst.e
+      onSetCategory: inst.e,
+      onAddExclusion: inst.f
     }, inst)).$n;
 
     return _n;
@@ -1170,19 +1171,20 @@ var _xvdomSpec5$1 = {
   u: function u(inst, pInst) {
     var v;
 
-    if (inst.d !== pInst.d || inst.c !== pInst.c || inst.b !== pInst.b || inst.a !== pInst.a || inst.e !== pInst.e) {
-      pInst.f = _xvdomUpdateComponent$2(OutfitRow, OutfitRow.state, {
+    if (inst.e !== pInst.e || inst.d !== pInst.d || inst.c !== pInst.c || inst.b !== pInst.b || inst.a !== pInst.a || inst.f !== pInst.f) {
+      pInst.g = _xvdomUpdateComponent$2(OutfitRow, OutfitRow.state, {
         db: pInst.a = inst.a,
         outfitId: pInst.b = inst.b,
         selectedOutfitId: pInst.c = inst.c,
         onSelect: pInst.d = inst.d,
-        onSetCategory: pInst.e = inst.e
-      }, pInst.f);
+        onSetCategory: pInst.e = inst.e,
+        onAddExclusion: pInst.f = inst.f
+      }, pInst.g);
     }
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec4$1 = {
+var _xvdomSpec5$1 = {
   c: function c(inst) {
     var _n = _xvdomEl$4('div'),
         _n2;
@@ -1217,24 +1219,29 @@ var _xvdomSpec4$1 = {
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec3$1 = {
+var _xvdomSpec4$1 = {
   c: function c(inst) {
     var _n = _xvdomEl$4('div');
 
     _n.className = 'List';
-    inst.b = _xvdomCreateDynamic$3(true, _n, inst.a);
+    inst.b = _xvdomCreateDynamic$3(false, _n, inst.a);
+    inst.d = _xvdomCreateDynamic$3(false, _n, inst.c);
     return _n;
   },
   u: function u(inst, pInst) {
     var v;
 
     if (inst.a !== pInst.a) {
-      pInst.b = _xvdomUpdateDynamic$3(true, pInst.a, pInst.a = inst.a, pInst.b);
+      pInst.b = _xvdomUpdateDynamic$3(false, pInst.a, pInst.a = inst.a, pInst.b);
+    }
+
+    if (inst.c !== pInst.c) {
+      pInst.d = _xvdomUpdateDynamic$3(false, pInst.c, pInst.c = inst.c, pInst.d);
     }
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec2$2 = {
+var _xvdomSpec3$1 = {
   c: function c(inst) {
     var _n = _xvdomEl$4('a');
 
@@ -1258,6 +1265,29 @@ var _xvdomSpec2$2 = {
     if (v !== pInst.c) {
       pInst.b.innerText = v;
       pInst.c = v;
+    }
+  },
+  r: xvdom.DEADPOOL
+};
+var _xvdomSpec2$2 = {
+  c: function c(inst) {
+    var _n = _xvdomEl$4('a');
+
+    _n.className = 'List-item List-item--selection';
+    inst.b = _n;
+    _n.onclick = inst.a;
+
+    _n.appendChild(document.createTextNode(('Remove outfits with these items') || ''));
+
+    return _n;
+  },
+  u: function u(inst, pInst) {
+    var v;
+    v = inst.a;
+
+    if (v !== pInst.a) {
+      pInst.b.onclick = v;
+      pInst.a = v;
     }
   },
   r: xvdom.DEADPOOL
@@ -1319,6 +1349,12 @@ var EMPTY_SELECTED_ITEM_IDS = ITEM_TYPES.reduce(function (obj, type) {
   return obj[type] = 0, obj;
 }, {});
 
+var isEmptySelection = function isEmptySelection(selectedItems) {
+  return ITEM_TYPES.reduce(function (sum, type) {
+    return sum + (selectedItems[type] && 1);
+  }, 0) < 2;
+};
+
 var OutfitRow = function OutfitRow(_ref) {
   var _ref$props = _ref.props,
       db = _ref$props.db,
@@ -1332,7 +1368,7 @@ var OutfitRow = function OutfitRow(_ref) {
   var outfit = db.outfits[outfitId];
   var isSelected = outfitId === selectedOutfitId;
   return {
-    $s: _xvdomSpec4$1,
+    $s: _xvdomSpec5$1,
     a: 'OutfitRow ' + (isSelected ? 'is-selected' : ''),
     c: ITEM_TYPES.map(function (type) {
       var itemId = outfit[type];
@@ -1346,10 +1382,14 @@ var OutfitRow = function OutfitRow(_ref) {
       };
     }),
     e: isSelected && {
-      $s: _xvdomSpec3$1,
-      a: CATEGORIES.map(function (cat) {
+      $s: _xvdomSpec4$1,
+      a: !isEmptySelection(selectedItems) && {
+        $s: _xvdomSpec2$2,
+        a: bindSend('handleAddExclusion')
+      },
+      c: CATEGORIES.map(function (cat) {
         return {
-          $s: _xvdomSpec2$2,
+          $s: _xvdomSpec3$1,
           a: function a() {
             return onSetCategory(cat);
           },
@@ -1392,22 +1432,34 @@ OutfitRow.state = {
     return {
       selectedItems: _extends({}, selectedItems, defineProperty({}, itemType, selectedItems[itemType] === 0 ? +itemId : 0))
     };
+  },
+
+  handleAddExclusion: function handleAddExclusion(_ref6) {
+    var props = _ref6.props,
+        state = _ref6.state;
+
+    setTimeout(function () {
+      return props.onAddExclusion(state.selectedItems);
+    });
+    return state;
   }
 };
 
-var renderOutfitListItem = function renderOutfitListItem(outfitId, _ref6) {
-  var db = _ref6.db,
-      selectedOutfitId = _ref6.selectedOutfitId,
-      onSelect = _ref6.onSelect,
-      onSetCategory = _ref6.onSetCategory;
+var renderOutfitListItem = function renderOutfitListItem(outfitId, _ref7) {
+  var db = _ref7.db,
+      selectedOutfitId = _ref7.selectedOutfitId,
+      onSelect = _ref7.onSelect,
+      onSetCategory = _ref7.onSetCategory,
+      onAddExclusion = _ref7.onAddExclusion;
   return {
     text: {
-      $s: _xvdomSpec5$1,
+      $s: _xvdomSpec6,
       a: db,
       b: outfitId,
       c: selectedOutfitId,
       d: onSelect,
-      e: onSetCategory
+      e: onSetCategory,
+      f: onAddExclusion
     }
   };
 };
@@ -1422,13 +1474,27 @@ function isUncategorized(outfitId) {
   return true;
 }
 
-var firstTen = function firstTen(outfits, _ref7) {
-  var db = _ref7.db,
-      category = _ref7.category,
-      user = _ref7.user;
+// 'bottom', 'shirt', 'sweater', 'businessAttire'
+function isExcluded(outfitId) {
+  // this === { db, user }
+  var outfit = this.db.outfits[outfitId];
+  var exclusions = this.user.exclusions || {};
+  var ex;
+  var exIds = Object.keys(exclusions);
+  for (var i = 0; i < exIds.length; ++i) {
+    ex = exclusions[exIds[i]];
+    if ((ex.bottom === 0 || ex.bottom === outfit.bottom) && (ex.shirt === 0 || ex.shirt === outfit.shirt) && (ex.sweater === 0 || ex.sweater === outfit.sweater) && (ex.businessAttire === 0 || ex.businessAttire === outfit.businessAttire)) return false;
+  }
+  return true;
+}
+
+var firstTen = function firstTen(outfits, context) {
+  var db = context.db,
+      category = context.category,
+      user = context.user;
 
   if (category === 'uncategorized') {
-    return db.outfitIds.filter(isUncategorized, user).slice(0, PAGE_SIZE);
+    return db.outfitIds.filter(isUncategorized, user).filter(isExcluded, context).slice(0, PAGE_SIZE);
   }
   return outfits ? Object.keys(outfits) : [];
 };
@@ -1441,7 +1507,7 @@ var OutfitList = function OutfitList(_ref8) {
       selectedOutfitId = _ref8.state.selectedOutfitId,
       bindSend = _ref8.bindSend;
   return {
-    $s: _xvdomSpec6$1,
+    $s: _xvdomSpec7,
     a: firstTen,
     b: renderOutfitListItem,
     c: {
@@ -1450,7 +1516,8 @@ var OutfitList = function OutfitList(_ref8) {
       user: user,
       selectedOutfitId: selectedOutfitId,
       onSelect: bindSend('handleSelectOutfit'),
-      onSetCategory: bindSend('handleSetCategory')
+      onSetCategory: bindSend('handleSetCategory'),
+      onAddExclusion: bindSend('handleAddExclusion')
     },
     d: user[category]
   };
@@ -1462,15 +1529,31 @@ var onInit$1 = function onInit$1(_ref9) {
   return { selectedOutfitId: state && state.selectedOutfitId || 0 };
 };
 
+var exclusionId = function exclusionId(e) {
+  return e.bottom + '-' + e.shirt + '-' + e.sweater + '-' + e.businessAttire;
+};
+
 OutfitList.state = {
   onInit: onInit$1,
   onProps: onInit$1,
   handleSelectOutfit: function handleSelectOutfit(_$$1, selectedOutfitId) {
     return { selectedOutfitId: selectedOutfitId };
   },
-  handleSetCategory: function handleSetCategory(_ref10, cat) {
-    var user = _ref10.props.user,
-        selectedOutfitId = _ref10.state.selectedOutfitId;
+  handleAddExclusion: function handleAddExclusion(_ref10, exclusion) {
+    var user = _ref10.props.user;
+
+    user.exclusions = user.exclusions || {};
+    var exId = exclusionId(exclusion);
+    debugger;
+    if (!user.exclusions[exId]) {
+      user.exclusions[exId] = exclusion;
+      User.save(user);
+    }
+    return 0;
+  },
+  handleSetCategory: function handleSetCategory(_ref11, cat) {
+    var user = _ref11.props.user,
+        selectedOutfitId = _ref11.state.selectedOutfitId;
 
     user[cat] = user[cat] || {};
     if (!user[cat][selectedOutfitId]) {
@@ -1496,7 +1579,7 @@ var _xvdomCreateDynamic = xvdom.createDynamic;
 var _xvdomEl = xvdom.el;
 var _xvdomUpdateComponent = xvdom.updateComponent;
 var _xvdomUpdateDynamic = xvdom.updateDynamic;
-var _xvdomSpec9 = {
+var _xvdomSpec5 = {
   c: function c(inst) {
     var _n = (inst.c = _xvdomCreateComponent(App, App.state, {
       user: inst.a,
@@ -1517,7 +1600,7 @@ var _xvdomSpec9 = {
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec8 = {
+var _xvdomSpec4 = {
   c: function c(inst) {
     var _n = (inst.c = _xvdomCreateComponent(Tabs, Tabs.state, {
       hrefPrefix: '#',
@@ -1540,7 +1623,7 @@ var _xvdomSpec8 = {
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec7 = {
+var _xvdomSpec3 = {
   c: function c(inst) {
     var _n = _xvdomCreateComponent(Icon, Icon.state, {
       className: 'c-white l-padding-h4',
@@ -1553,7 +1636,7 @@ var _xvdomSpec7 = {
   u: function u() {},
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec6 = {
+var _xvdomSpec2 = {
   c: function c(inst) {
     var _n = _xvdomEl('body'),
         _n2;
@@ -1604,7 +1687,7 @@ var _xvdomSpec6 = {
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec5 = {
+var _xvdomSpec = {
   c: function c(inst) {
     var _n = (inst.d = _xvdomCreateComponent(OutfitList, OutfitList.state, {
       category: inst.a,
@@ -1627,50 +1710,6 @@ var _xvdomSpec5 = {
   },
   r: xvdom.DEADPOOL
 };
-var _xvdomSpec4 = {
-  c: function c() {
-    var _n = _xvdomEl('div');
-
-    _n.appendChild(document.createTextNode(('Hello') || ''));
-
-    return _n;
-  },
-  u: function u() {},
-  r: xvdom.DEADPOOL
-};
-var _xvdomSpec3 = {
-  c: function c() {
-    var _n = _xvdomEl('div');
-
-    _n.appendChild(document.createTextNode(('Hello') || ''));
-
-    return _n;
-  },
-  u: function u() {},
-  r: xvdom.DEADPOOL
-};
-var _xvdomSpec2 = {
-  c: function c() {
-    var _n = _xvdomEl('div');
-
-    _n.appendChild(document.createTextNode(('Hello') || ''));
-
-    return _n;
-  },
-  u: function u() {},
-  r: xvdom.DEADPOOL
-};
-var _xvdomSpec = {
-  c: function c() {
-    var _n = _xvdomEl('div');
-
-    _n.appendChild(document.createTextNode(('Hello') || ''));
-
-    return _n;
-  },
-  u: function u() {},
-  r: xvdom.DEADPOOL
-};
 function toggleSignIn() {
   if (firebase.auth().currentUser) {
     User.unsetCurrent();
@@ -1686,36 +1725,16 @@ function toggleSignIn() {
 
 var TABS = {
   uncategorized: {
-    title: 'Uncategorized',
-    view: function view(id) {
-      return {
-        $s: _xvdomSpec
-      };
-    }
+    title: 'Uncategorized'
   },
   yup: {
-    title: 'Yup',
-    view: function view(id) {
-      return {
-        $s: _xvdomSpec2
-      };
-    }
+    title: 'Yup'
   },
   nope: {
-    title: 'Nope',
-    view: function view(id) {
-      return {
-        $s: _xvdomSpec3
-      };
-    }
+    title: 'Nope'
   },
   maybe: {
-    title: 'Maybe',
-    view: function view(id) {
-      return {
-        $s: _xvdomSpec4
-      };
-    }
+    title: 'Maybe'
   }
 };
 
@@ -1725,19 +1744,19 @@ var App = function App(_ref) {
       db = _ref$props.db,
       category = _ref.state.category;
   return {
-    $s: _xvdomSpec6,
+    $s: _xvdomSpec2,
     a: {
-      $s: _xvdomSpec7
+      $s: _xvdomSpec3
     },
     b: {
-      $s: _xvdomSpec8,
+      $s: _xvdomSpec4,
       a: category,
       b: TABS
     },
     d: toggleSignIn,
     f: user ? 'Sign out' : 'Sign in',
     h: user && db && {
-      $s: _xvdomSpec5,
+      $s: _xvdomSpec,
       a: category,
       b: db,
       c: user
@@ -1769,7 +1788,7 @@ App.state = {
 
 var renderApp = function renderApp(user, db) {
   return {
-    $s: _xvdomSpec9,
+    $s: _xvdomSpec5,
     a: user,
     b: db
   };

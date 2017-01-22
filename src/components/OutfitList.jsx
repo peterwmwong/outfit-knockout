@@ -38,9 +38,14 @@ const OutfitRow = ({
       </div>
       {isSelected &&
         <div className="List">
-          {/*!isEmptySelection(selectedItems) &&
-            <a className="List-item List-item--selection" href="#" onclick={bindSend('handleRemoveCombosWithSelected')}>Remove outfits with these items</a>
-          */}
+          {!isEmptySelection(selectedItems) &&
+            <a
+              className="List-item List-item--selection"
+              onclick={bindSend('handleAddExclusion')}
+            >
+              Remove outfits with these items
+            </a>
+          }
           {CATEGORIES.map(cat =>
             <a
               className="List-item List-item--selection"
@@ -72,10 +77,15 @@ OutfitRow.state = {
         [itemType]: selectedItems[itemType] === 0 ? +itemId : 0
       }
     };
+  },
+
+  handleAddExclusion: ({ props, state }) => {
+    setTimeout(() => props.onAddExclusion(state.selectedItems));
+    return state;
   }
 };
 
-const renderOutfitListItem = (outfitId, { db, selectedOutfitId, onSelect, onSetCategory }) => ({
+const renderOutfitListItem = (outfitId, { db, selectedOutfitId, onSelect, onSetCategory, onAddExclusion }) => ({
   text: (
     <OutfitRow
       db={db}
@@ -83,6 +93,7 @@ const renderOutfitListItem = (outfitId, { db, selectedOutfitId, onSelect, onSetC
       selectedOutfitId={selectedOutfitId}
       onSelect={onSelect}
       onSetCategory={onSetCategory}
+      onAddExclusion={onAddExclusion}
     />
   )
 })
@@ -97,9 +108,34 @@ function isUncategorized(outfitId){
   return true;
 }
 
-const firstTen = (outfits, { db, category, user }) => {
+// 'bottom', 'shirt', 'sweater', 'businessAttire'
+function isExcluded(outfitId){
+  // this === { db, user }
+  var outfit = this.db.outfits[outfitId];
+  var exclusions = this.user.exclusions || {};
+  var ex;
+  var exIds = Object.keys(exclusions);
+  for(var i=0; i<exIds.length; ++i){
+    ex = exclusions[exIds[i]];
+    if(
+      (ex.bottom === 0         || ex.bottom         === outfit.bottom) &&
+      (ex.shirt === 0          || ex.shirt          === outfit.shirt) &&
+      (ex.sweater === 0        || ex.sweater        === outfit.sweater) &&
+      (ex.businessAttire === 0 || ex.businessAttire === outfit.businessAttire)
+    ) return false;
+  }
+  return true;
+}
+
+const firstTen = (outfits, context) => {
+  const { db, category, user } = context;
   if(category === 'uncategorized') {
-    return db.outfitIds.filter(isUncategorized, user).slice(0, PAGE_SIZE);
+    return (
+      db.outfitIds
+        .filter(isUncategorized, user)
+        .filter(isExcluded, context)
+        .slice(0, PAGE_SIZE)
+    );
   }
   return outfits ? Object.keys(outfits) : [];
 }
@@ -116,7 +152,8 @@ const OutfitList = ({ props: { user, category, db }, state: { selectedOutfitId }
       user,
       selectedOutfitId,
       onSelect: bindSend('handleSelectOutfit'),
-      onSetCategory: bindSend('handleSetCategory')
+      onSetCategory: bindSend('handleSetCategory'),
+      onAddExclusion: bindSend('handleAddExclusion')
     }}
     list={user[category]}
   />
@@ -124,10 +161,22 @@ const OutfitList = ({ props: { user, category, db }, state: { selectedOutfitId }
 
 const onInit = ({ props, state }) => ({ selectedOutfitId: (state && state.selectedOutfitId) || 0 });
 
+const exclusionId = e => `${e.bottom}-${e.shirt}-${e.sweater}-${e.businessAttire}`
+
 OutfitList.state = {
   onInit,
   onProps: onInit,
   handleSelectOutfit: (_, selectedOutfitId) => ({ selectedOutfitId }),
+  handleAddExclusion: ({ props: { user } }, exclusion) => {
+    user.exclusions = user.exclusions || {};
+    const exId = exclusionId(exclusion);
+    debugger;
+    if(!user.exclusions[exId]){
+      user.exclusions[exId] = exclusion;
+      User.save(user);
+    }
+    return 0;
+  },
   handleSetCategory: ({ props: { user }, state: { selectedOutfitId } }, cat) => {
     user[cat] = user[cat] || {};
     if(!user[cat][selectedOutfitId]) {
