@@ -1,4 +1,4 @@
-const CACHE_VERSION = 21;
+const CACHE_VERSION = 22;
 const CACHE_NAME = `static-v${CACHE_VERSION}`;
 const CACHED_PATH_NAMES = [
   '/outfit-knockout/dist/',
