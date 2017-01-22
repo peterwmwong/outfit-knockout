@@ -1301,7 +1301,7 @@ var _xvdomSpec$4 = {
     _n.itemId = inst.c;
     _n.itemType = inst.d;
     _n.onclick = inst.e;
-    _n.style = inst.f;
+    _n.style.cssText = inst.f;
     return _n;
   },
   u: function u(inst, pInst) {
@@ -1337,7 +1337,7 @@ var _xvdomSpec$4 = {
     v = inst.f;
 
     if (v !== pInst.f) {
-      pInst.b.style = v;
+      pInst.b.style.cssText = v;
       pInst.f = v;
     }
   },
